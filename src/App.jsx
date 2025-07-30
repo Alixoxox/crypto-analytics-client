@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -8,8 +8,11 @@ import RegisterComponent from './pages/register.jsx';
 import Compare from './pages/Compare.jsx';
 import { PING } from './utils/fetchdata.js';
 import { checktoken } from './utils/extras.js';
-
+import AccountSettings from './pages/account.jsx';
+import Market from './pages/Market.jsx';
+import { UserContext } from './context/main.jsx';
 function App() {
+  const {user} = useContext(UserContext);
   useEffect(() => {
     async () => {
      await PING();
@@ -24,7 +27,9 @@ function App() {
         <Route path="/account/login" element={<Login />} />
         <Route path="/account/register" element={<RegisterComponent />} />
         <Route path="/coin/:id" element={<CoinSnapshot />} />
+        <Route path="/Account/" element={<AccountSettings />} />
         <Route path="/Compare/:id" element={<Compare />} />  
+        <Route path="/Markets/" element={<Market />} />
       </Routes>
     </Router>
 

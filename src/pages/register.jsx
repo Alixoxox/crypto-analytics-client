@@ -23,6 +23,7 @@ export default function RegisterComponent() {
     const x=await Registration(name, email, password);
     if(x?.error) return;
     setUser({sub: null, email, name, picture: null});
+    navigate("/Overview/");
   };}
   const registergoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {

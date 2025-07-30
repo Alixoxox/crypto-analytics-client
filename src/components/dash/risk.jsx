@@ -1,10 +1,8 @@
-import { UserContext } from "@/context/main";
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { assessRisk,riskTypes } from "@/utils/extras"; // Assuming this function is defined in utils
 import { useNavigate } from "react-router-dom";
 
-export default function RiskAssessmentTable() {
-  const { TopMarketData } = useContext(UserContext);
+export default function RiskAssessmentTable({TopMarketData}) {
   const [filter, setFilter] = useState(null);
   const navigate= useNavigate();
   const assetsWithRisk = TopMarketData.map(asset => ({

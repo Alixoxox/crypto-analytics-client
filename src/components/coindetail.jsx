@@ -146,7 +146,7 @@ const coin = viewCoin?.lastestShot;
             />
             <YAxis
               domain={["auto", "auto"]}
-              tickFormatter={(v) => `$${(v / 1000).toFixed(1)}k`}
+              tickFormatter={(v) => v >= 1000 ? `$${(v / 1000).toFixed(2)}k` : `$${v.toFixed(3)}`}
               tick={{ fontSize: 10 }}
               tickLine={false}
               axisLine={false}

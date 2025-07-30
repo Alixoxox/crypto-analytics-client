@@ -9,7 +9,7 @@ export default function CoinViewNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { setisOpen, user } = useContext(UserContext);
 
-  const navigationItems = ["Overview", "Markets", "Compare"];
+  const navigationItems = ["Overview", "Markets", "Compare","Account"];
 
   return (
     <header className="flex flex-col bg-[#1a1a1a] text-white border-b border-[#363636]">
@@ -62,7 +62,6 @@ export default function CoinViewNavbar() {
             onClick={() => navigate("/account/")}
             onError={(e) => {
               e.target.onerror = null; // Prevent infinite loop
-              e.target.src = fallbackimg; // Set fallback image
             }}
           />) : (<Button
             variant="outline"

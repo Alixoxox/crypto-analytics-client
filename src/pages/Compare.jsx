@@ -150,7 +150,8 @@ const CompareHeader = () => {
     <div className="min-h-screen bg-[#1a1a1a] font-spaceGrotesk text-white">
       <CoinViewNavbar />
       <div className="px-10 py-5 gap-1">
-        <h1 className="text-2xl text-gray-200 font-bold">Compare</h1>
+                <h1 className="text-3xl font-bold tracking-tight mb-1 text-white">
+Compare</h1>
         <p className="text-gray-400 py-1">
           Stay ahead with real-time insights into the crypto market. Track top performers, analyze trends, and make well informed decisions.
         </p>

@@ -1,4 +1,3 @@
-
 export const GettrendingCoins = async () => {
   try {
     const response= await fetch("http://127.0.0.1:8080/coins/trending")
@@ -73,9 +72,9 @@ export const getMarketreview = async () => {
     }
   };
 
-  export const getTopRakers=async(limit)=>{
+  export const getTopRakers=async(page,size)=>{
     try {
-      const response = await fetch(`http://127.0.0.1:8080/coins/topRank?limit=${limit}`);
+      const response = await fetch(`http://127.0.0.1:8080/coins/topRank?page=${page}&size=${size}`);
       if (!response.ok) {
         const errData = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(errData.error || 'Failed to fetch data');
