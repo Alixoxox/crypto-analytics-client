@@ -1,15 +1,45 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { UserContext } from '@/context/main';
 import { RiArrowRightUpBoxFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function TopMovers() {
   const navigate=useNavigate()
   const {gainCoins}=useContext(UserContext)
-  return (
-<div className="flex gap-6 overflow-x-auto whitespace-nowrap scroll-smooth p-6 text-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+  const scrollRef = useRef(null);
+
+  const scroll = (dir) => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const amount = clientWidth * 0.7;
+      scrollRef.current.scrollTo({
+        left: dir === "left" ? scrollLeft - amount : scrollLeft + amount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  return (<> 
+  <h1 className="px-10 text-xl font-semibold text-gray-200 pb-0">Top Movers</h1>
+     <div className="relative">
+        {/* Scroll Buttons */}
+        <button
+          onClick={() => scroll("left")}
+          className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-zinc-800 p-2 rounded-full shadow hover:bg-zinc-700"
+        >
+          <ChevronLeft />
+        </button>
+
+        <button
+          onClick={() => scroll("right")}
+          className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-zinc-800 p-2 rounded-full shadow hover:bg-zinc-700"
+        >
+          <ChevronRight />
+        </button>
+<div className="flex gap-6 overflow-x-auto whitespace-nowrap scroll-smooth p-6 text-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"ref={scrollRef}>
 <div className="flex gap-6 w-max">
         {gainCoins.map((coin) => (
           <Dialog key={coin._id}>
@@ -52,6 +82,7 @@ export default function TopMovers() {
           </Dialog>
         ))}
       </div>
-    </div>
+    </div></div>
+    </>
   );
 }

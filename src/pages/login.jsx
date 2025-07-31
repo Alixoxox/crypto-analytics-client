@@ -15,8 +15,7 @@ export default function LoginComponent() {
     if(email.trim() !== "" && password.trim() !== "") {
       const x=await LoginManual(email, password);
       if(x?.error)return;
-      console.log(x)
-      setUser({googleId: x.googleId, email: x.email, name: x.name, picture: x.pictureUrl});
+      setUser({sub: x.googleId, email: x.email, name: x.name, picture: x.pictureUrl});
       navigate("/Overview/");
   };  
   }
@@ -37,7 +36,7 @@ export default function LoginComponent() {
           if(data?.error){
             return;
           }
-          setUser({sub: userInfo.sub, email: userInfo.email, name: userInfo.name, picture: userInfo.picture});
+          setUser({sub: userInfo.googleId, email: userInfo.email, name: userInfo.name, picture: userInfo.picture});
           navigate("/Overview/");
         } else {
           console.error("Error fetching user info:", userInfo);

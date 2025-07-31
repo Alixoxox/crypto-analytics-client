@@ -11,6 +11,7 @@ import { checktoken } from './utils/extras.js';
 import AccountSettings from './pages/account.jsx';
 import Market from './pages/Market.jsx';
 import { UserContext } from './context/main.jsx';
+import Notifications from './pages/Notifications.jsx';
 function App() {
   const {user} = useContext(UserContext);
   useEffect(() => {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/Account/" element={<AccountSettings />} />
         <Route path="/Compare/:id" element={<Compare />} />  
         <Route path="/Markets/" element={<Market />} />
+        <Route path="/notify" element={<Notifications />} />
       </Routes>
     </Router>
 

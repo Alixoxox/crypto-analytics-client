@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { use, useContext, useEffect, useState } from 'react';
 import { Search, Bell, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@/context/main';
@@ -8,7 +8,6 @@ export default function CoinViewNavbar() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { setisOpen, user } = useContext(UserContext);
-
   const navigationItems = ["Overview", "Markets", "Compare","Account"];
 
   return (
@@ -52,18 +51,16 @@ export default function CoinViewNavbar() {
           </div>
 
           {/* Notification Button */}
-          <button className="flex ms-1 items-center justify-center h-10 w-10 bg-[#363636] rounded-full">
+          <button className="flex ms-1 items-center hover:cursor-pointer hover:scale-[1.01] justify-center h-10 w-10 bg-[#363636] rounded-full"onClick={() => navigate("/notify")}>
             <Bell className="w-5 h-5 text-white" />
           </button>
           {user?.email ? (<img
             src={user.picture || fallbackimg}
+            referrerPolicy="no-referrer"
             alt="User"
             className="h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 rounded-full object-cover hover:cursor-pointer"
             onClick={() => navigate("/account/")}
-            onError={(e) => {
-              e.target.onerror = null; // Prevent infinite loop
-            }}
-          />) : (<Button
+            />) : (<Button
             variant="outline"
             className="text-white border-white hover:bg-white/10"
             onClick={() => {
@@ -72,8 +69,6 @@ export default function CoinViewNavbar() {
             }}>Login</Button>)
 
           }
-
-
           {/* Hamburger Button */}
           <button
             className="lg:hidden p-2 rounded bg-[#363636] hover:bg-gray-600"

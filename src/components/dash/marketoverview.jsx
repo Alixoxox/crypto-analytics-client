@@ -7,7 +7,7 @@ import { UserContext } from "@/context/main";
 
 export default function MarketOverviewChart() {
   const {btc} =useContext(UserContext)
-  const [range, setRange] = useState("7d");
+  const [range, setRange] = useState("all");
   const fullData = useMemo(() => {
   return btc.timestamps.map((ts, i) => ({
     date: new Date(ts),

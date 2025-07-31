@@ -60,14 +60,14 @@ export const getMarketreview = async () => {
       const response = await fetch(`http://127.0.0.1:8080/coin/detail?id=${coinId}`);
   
       if (!response.ok) {
-        const errData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(errData.error || 'Failed to fetch data');
+        const errData = await response.json()  
+        throw new Error(errData  || 'Failed to fetch data');
       }
   
       const data = await response.json();
       return data;
     } catch (err) {
-      console.error("Error in getIndividualCoin:", err.message);
+      console.error("Error in getIndividualCoin:", err);
       return { error: err.message };
     }
   };
@@ -76,13 +76,13 @@ export const getMarketreview = async () => {
     try {
       const response = await fetch(`http://127.0.0.1:8080/coins/topRank?page=${page}&size=${size}`);
       if (!response.ok) {
-        const errData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(errData.error || 'Failed to fetch data');
+        const errData = await response.json()  
+        throw new Error(errData  || 'Failed to fetch data');
       }
       const data = await response.json();
       return data;
     } catch (err) {
-      console.error("Error in getIndividualCoin:", err.message);
+      console.error("Error in getIndividualCoin:", err);
       return { error: err.message };
     }
   }
@@ -90,27 +90,27 @@ export const getMarketreview = async () => {
     try {
       const response = await fetch(`http://127.0.0.1:8080/coins/name`);
       if (!response.ok) {
-        const errData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(errData.error || 'Failed to fetch data');
+        const errData = await response.json()  
+        throw new Error(errData  || 'Failed to fetch data');
       }
       const data = await response.json();
       return data;
     } catch (err) {
-      console.error("Error in getting coi names:", err.message);
+      console.error("Error in getting coi names:", err);
       return { error: err.message };
     }
   }
 export const Comparecoins = async (coin1, coin2) => {
 try{ const response = await fetch(`http://127.0.0.1:8080/coins/compare?coin1=${coin1}&coin2=${coin2}`);
   if (!response.ok) {
-    const errData = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(errData.error || 'Failed to fetch data');
+    const errData = await response.json()  
+    throw new Error(errData  || 'Failed to fetch data');
   }
   const data = await response.json();
   return data;
 
 }catch(err){
-  console.error("Error in Comparecoins:", err.message);
+  console.error("Error in Comparecoins:", err);
   return { error: err.message };
 
 }}
@@ -132,13 +132,13 @@ export const googleLogin = async (name,email,picture,sub) => {
       }),
     })
   if (!response.ok) {
-    const errData = await response.text().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(errData.error || 'Failed to fetch data');
+    const errData = await response.text()  
+    throw new Error(errData  || 'Failed to fetch data');
   }
   const data = await response.text();
   localStorage.setItem("jwt", data);
 }catch(err) {
-  console.error("Error in googleLogin:", err.message);
+  console.error("Error in googleLogin:", );
   return { error: err.message };
 }}
 
@@ -157,16 +157,15 @@ try{
     }),
   })
 if (!response.ok) {
-  const errData = await response.json().catch(() => ({ error: 'Unknown error' }));
-  throw new Error(errData.error || 'Failed to fetch data');
+  const errData = await response.json()  
+  console.log(errData);
+  throw new Error(errData || 'Failed to fetch data');
 }
 const data = await response.json();
-console.log("Login successful:", data);
-console.log(data.token)
 localStorage.setItem("jwt", data.token);
 return data.User;
 }catch(err) {
-console.error("Error in login :", err.message);
+console.error("Error in login :", err);
 return { error: err.message };
 }}
 export const Registration = async (name,email, password) => {
@@ -186,17 +185,133 @@ export const Registration = async (name,email, password) => {
       }),
     })
   if (!response.ok) {
-    const errData = await response.text().catch(() => ({ error: 'Unknown error' }));
+    const errData = await response.text()  
     console.log(errData);
-    throw new Error(errData || 'Failed to fetch data');
+    throw new Error(errData||errData || 'Failed to fetch data');
   }
   const data = await response.text();
  console.log("Registration successful:", data);
   localStorage.setItem("jwt", data);
  
   }catch(err) {
-  console.error("Error in registration:", err.message);
+  console.error("Error in registration:", err);
   return { error: err.message };
   }}
   
+export const changePassword = async (email, Password) => {
+  try{
+    if( !email && !Password){
+    throw new Error("Invalid user data");}
+    const response = await fetch("http://127.0.0.1:8080/account/changePass", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: Password,
+      }),
+    })
+  if (response.ok) {
+   return { success: true, message: "Password changed successfully" };
+  }
+  const errData = await response.json()  
+  throw new Error(errData  || 'Failed to fetch data');
+
+  }catch(err) {
+  console.error("Error in changing pass :", err);
+  return { error: err.message };
+  }}
+
+  export const Linkgoogle = async (email, googleId) => {
+    try{
+      if( !email && !googleId){
+      throw new Error("Invalid user data");}
+      const response = await fetch("http://127.0.0.1:8080/account/linkG", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          googleId: googleId,
+        }),
+      })
+      if(response.ok){
+        return { success: true, message: "Google account linked successfully" };
+      }
+    else{
+      const errData = await response.json()  
+      throw new Error(errData  || 'Failed to fetch data');
+    }
+    
+    }catch(err) {
+    console.error("Error in Linking google :", err);
+    return { error: err.message };
+    }}
   
+    export const UnLinkgoogle = async (email) => {
+      try{
+        if( !email ){
+        throw new Error("Invalid user data");}
+        const response = await fetch("http://127.0.0.1:8080/account/UnlinkG", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+          }),
+        })
+        if(response.ok){
+        return { success: true, message: "Google account unlinked successfully" };
+        }
+      else {
+        const errData = await response.json()  
+        throw new Error(errData  || 'Failed to fetch data');
+      }
+      
+      }catch(err) {
+      console.error("Error in UnlinkG :", err);
+      return { error: err.message };
+      }}
+
+export const DeleteAcc = async (email) => {
+        try{
+          if( !email){
+          throw new Error("Invalid user data");}
+          const response = await fetch("http://127.0.0.1:8080/account/delete", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+            }),
+          })
+        if (response.ok) {
+         return { success: true, message: "Account deleted successfully"  };
+        }
+       else{
+        const errData = await response.json()  
+        throw new Error(errData  || 'Failed to fetch data');
+       }
+        }catch(err) {
+        console.error("Error in DeleteAcc :", err);
+        return { error: err.message };
+        }}
+
+       export const uploadImage = async (file,email) => {
+        console.log(file)
+          const formData = new FormData();
+          formData.append("file", file);
+        
+          const res = await fetch(`http://localhost:8080/imgUpload/${email}`, {
+            method: "POST",
+            body: formData,
+          });
+        
+          const data = await res.json();
+          console.log("Image URL:", data);
+          return data
+        };

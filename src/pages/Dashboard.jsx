@@ -50,7 +50,7 @@ export default function dashboard() {
       <h1 className="text-3xl tracking-tight text-gray-200 font-bold">Market Overview</h1>
       <p className="text-gray-400 py-1"> Stay ahead with real-time insights into the crypto market. Track top performers, analyze trends, and make well informed decisions.</p>
       </div>
-      <h1 className="px-10 text-xl font-semibold text-gray-200 pb-0">Top Movers</h1>
+  
       <TopMovers/>
       <MarketOverviewChart/>
       <div className="px-6 ">
