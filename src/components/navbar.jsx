@@ -9,7 +9,7 @@ export default function CoinViewNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { setisOpen, user } = useContext(UserContext);
   const navigationItems = ["Overview", "Markets", "Compare","Account"];
-
+  const [search, setSearch] = useState("");
   return (
     <header className="flex flex-col bg-[#1a1a1a] text-white border-b border-[#363636]">
       <div className="flex items-center justify-between px-2 sm:px-6 py-3">
@@ -42,12 +42,15 @@ export default function CoinViewNavbar() {
         <div className="flex items-center space-x-2 sm:space-x-4">
           {/* Search Field */}
           <div className="relative hidden sm:block">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
             <input
               type="text"
               placeholder="Search"
-              className="bg-[#363636] text-white rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none transition-colors w-48 sm:w-64"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-[#363636] text-white rounded-full pl-5 pr-4 py-2 text-sm focus:outline-none transition-colors w-50 sm:w-64"
             />
+            <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5 hover:scale-[1.05] cursor-pointer" onClick={()=>{search!==""? navigate(`/coin/${search}`):null;}} />
+
           </div>
 
           {/* Notification Button */}
@@ -83,13 +86,19 @@ export default function CoinViewNavbar() {
       {menuOpen && (
         <div className="lg:hidden px-4 pb-4 space-y-3">
           {navigationItems.map(item => (
-            <a
+            <span
               key={item}
               href="#"
-              className="block text-gray-300 hover:text-white py-2 border-b border-gray-700"
-            >
+              className="block text-gray-300 hover:text-white py-2 border-b border-gray-700 hover:cursor-pointer "
+              onClick={() => {
+                if (item === "Compare") {
+                  navigate(`/${item}/select`);
+                } else {
+                  navigate(`/${item}/`);
+                }
+              }} >
               {item}
-            </a>
+            </span>
           ))}
           <div className="mt-3">
             <input

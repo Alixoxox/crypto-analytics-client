@@ -12,12 +12,16 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useGoogleLogin } from "@react-oauth/google";
-import { changePassword, DeleteAcc, googleLogin, Linkgoogle, UnLinkgoogle, uploadImage } from "@/utils/fetchdata";
+import { changePassword, DeleteAcc, Linkgoogle, UnLinkgoogle, uploadImage } from "@/utils/fetchdata";
 
 export default function AccountSettings() {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
-
+  useEffect(() => {
+    if (user?.email === null) {
+      navigate("/account/login");
+    }
+  }, [user, navigate]);
   const [name, setName] = useState(user?.name || "");
   const [profilePic, setProfilePic] = useState(null);
   const [preview, setPreview] = useState(null);

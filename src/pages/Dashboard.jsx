@@ -34,7 +34,7 @@ export default function dashboard() {
         data=await getMarketreview()
         setmarketreview(data)
        } if(TopMarketData.length === 0){
-        data = await getTopRakers(0,10);
+        data = await getTopRakers(10);
         setTopMarketData(data);
        }
        }
@@ -60,7 +60,7 @@ export default function dashboard() {
         <span className="text-purple-300 hover:text-purple-400 hover:underline hover:cursor-pointer" onClick={()=>navigate("/Markets/")}>View more</span>
       </div>
       </div>
-      <Risk TopMarketData={TopMarketData}/>
+      <Risk allAssets={TopMarketData}/>
       <TrendingCoins coins={trendingCoins}/>
     </div>
   );

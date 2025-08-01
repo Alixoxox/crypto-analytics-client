@@ -7,20 +7,14 @@ export function assessRisk(asset) {
     const athDiff = Math.abs(asset.ath_change_percentage || 0);
     const rank = asset.market_cap_rank || 999;
     const volumeRatio = marketCap > 0 ? volume / marketCap : 0;
-    const price = asset.current_price || 0;
-
-    // --- STABLECOIN DETECTION (Overrides Volatility/Stable) ---
-    const isStablecoin = change < 0.2 && price > 0.95 && price < 1.05;
-    if (isStablecoin) {
-      tags.push("Stablecoin");
-    } else {
+    
       // --- VOLATILITY ---
       if (change < 1.5) {
         tags.push("Stable");
       } else if (change > 5) {
         tags.push("Volatile");
       }
-    }
+ 
 
     // --- VOLUME ---
     if (volumeRatio > 0.15) {
@@ -51,7 +45,6 @@ export const riskTypes = [
   "High Volume",
   "Low Volume",
   "Recovery",
-  "Stablecoin",
   "Low Risk",
   "Medium Risk",
   "High Risk"

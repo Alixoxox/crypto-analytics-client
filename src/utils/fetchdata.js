@@ -72,9 +72,9 @@ export const getMarketreview = async () => {
     }
   };
 
-  export const getTopRakers=async(page,size)=>{
+  export const getTopRakers=async(limit)=>{
     try {
-      const response = await fetch(`http://127.0.0.1:8080/coins/topRank?page=${page}&size=${size}`);
+      const response = await fetch(`http://127.0.0.1:8080/coins/topRank?limit=${limit}`);
       if (!response.ok) {
         const errData = await response.json()  
         throw new Error(errData  || 'Failed to fetch data');

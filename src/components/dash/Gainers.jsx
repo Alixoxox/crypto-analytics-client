@@ -44,8 +44,8 @@ export default function TopMovers() {
         {gainCoins.map((coin) => (
           <Dialog key={coin._id}>
             <DialogTrigger asChild>
-              <Card className="bg-zinc-900 p-4 min-w-[160px] hover:scale-105 transition cursor-pointer">
-                <CardContent className="flex flex-col items-center">
+              <Card className="bg-zinc-900 p-4 min-w-[160px] max-w-[250px] hover:scale-105 transition cursor-pointer">
+                <CardContent className="flex flex-col items-center overflow-hidden">
                   <img
                     src={coin.image}
                     alt={coin.coinId}
@@ -53,8 +53,16 @@ export default function TopMovers() {
                     height={64}
                     className="mb-2"
                   />
-                  <div className="text-lg font-semibold capitalize">{coin.coinId}</div>
-                  <div className="text-sm text-green-400">+{coin.price_change_percentage_24h.toFixed(2)}%</div>
+<div
+  className={`font-semibold capitalize break-words max-w-[240px] px-4 ${
+    coin.coinId.length > 10 ? "text-sm" : "text-base"
+  }`}
+>
+  {coin.coinId}
+</div>  
+{coin?.price_change_percentage_24h < 0 ? (
+                  <div className="text-sm text-red-400">-{Math.abs(coin.price_change_percentage_24h).toFixed(2)}%</div>):(
+                 <div className="text-sm text-green-400">+{coin.price_change_percentage_24h.toFixed(2)}%</div>)}
                   <div className="text-sm text-white/70">${coin.current_price}</div>
                 </CardContent>
               </Card>
