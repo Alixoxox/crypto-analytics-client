@@ -34,10 +34,19 @@ export default function Notifications() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      // Replace this with your actual API call
-      const res = await fetch("http://localhost:8080/user/notify");
+      const token=localStorage.getItem("jwt");
+      const res = await fetch("http://localhost:8080/user/notify",{
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },body: JSON.stringify({ email: user.email})
+      })
+      if(!res.ok) {
+        setLoading(false);
+        return;
+      }
       const data = await res.json();
-      console.log(data);
       setNotifications(data);
       setLoading(false);
     };

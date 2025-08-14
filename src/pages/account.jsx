@@ -199,12 +199,12 @@ export default function AccountSettings() {
                                     Link
                                 </button>)}
                             </div>
-                            <div className="flex justify-between items-center bg-zinc-800 p-4 rounded-lg">
+                            {/* <div className="flex justify-between items-center bg-zinc-800 p-4 rounded-lg">
                                 <p className="text-sm text-gray-300">Wallet</p>
                                 <button className="bg-zinc-700 text-white px-4 py-1.5 rounded-full text-sm hover:bg-zinc-600 transition">
                                     Connect
                                 </button>
-                            </div>
+                            </div> */}
                             {/* Actions Section: Logout & Delete */}
                             <div className=" rounded-2xl mt-10  space-y-4">
                             <h3 className="text-xl font-semibold mb-4">Danger Zone</h3>

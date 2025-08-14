@@ -8,7 +8,6 @@ export default function LoginComponent() {
   const navigate=useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const {setUser}=useContext(UserContext);
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -94,19 +93,7 @@ export default function LoginComponent() {
                 />
               </div>
 
-              {/* Remember me checkbox */}
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 flex-shrink-0 "
-                />
-                <label htmlFor="remember" className="ml-2 text-sm select-none">
-                  Remember me {/* save to local storage */}
-                </label>
-              </div>
+              
 
               {/* Sign in button */}
               <button

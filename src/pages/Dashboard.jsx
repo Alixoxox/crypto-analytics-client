@@ -60,7 +60,7 @@ export default function dashboard() {
         <span className="text-purple-300 hover:text-purple-400 hover:underline hover:cursor-pointer" onClick={()=>navigate("/Markets/")}>View more</span>
       </div>
       </div>
-      <Risk allAssets={TopMarketData}/>
+      <Risk allAssets={TopMarketData} hide={true}/>
       <TrendingCoins coins={trendingCoins}/>
     </div>
   );

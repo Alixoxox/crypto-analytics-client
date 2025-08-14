@@ -9,7 +9,7 @@ import {  getIndividualCoin } from "@/utils/fetchdata";
 import { UserContext } from "@/context/main";
 import LoadingScreen from "./Loading";
 const CoinSnapshot = () => {
-const { viewCoin, setviewCoin } = useContext(UserContext);
+const { viewCoin, setviewCoin,user } = useContext(UserContext);
 const { id } = useParams();
 const navigate = useNavigate();
 const decodedId = decodeURIComponent(id); 
@@ -55,6 +55,19 @@ const formatDate = (date) => {
     month: "short",
   });
 };
+const AddCoin=async(decodedId)=>{
+  console.log("Adding coin to watchlist:", decodedId);
+const token = localStorage.getItem("jwt");
+  await fetch("http://localhost:8080/user/add/watching", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ coinName: decodedId,email:user.email }),
+  })
+
+}
 
 if (loading || !viewCoin?.lastestShot) return <LoadingScreen />;
 
@@ -76,14 +89,28 @@ const coin = viewCoin?.lastestShot;
         </CardDescription>
       </div>
     </div>
+    <div >
+    <Button
+      variant="outline"
+      className="text-white border-white hover:bg-white/10 me-5"
+      onClick={() => navigate(`/Compare/${decodedId}`)} 
+    >
+      Compare
+    </Button> 
 
     <Button
       variant="outline"
       className="text-white border-white hover:bg-white/10"
-      onClick={() => navigate(`/Compare/${decodedId}`)} 
+      onClick={() => {
+        if(!user.email) return navigate("/account/login");
+        AddCoin(decodedId)
+      }
+      }
     >
-      Compare
+      Add to WatchList
     </Button>
+    </div>
+   
   </div>
 </CardHeader>
 

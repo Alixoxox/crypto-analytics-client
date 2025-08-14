@@ -21,6 +21,9 @@ export default function TopMovers() {
       });
     }
   };
+  if(gainCoins.length === 0) {
+    return ;
+  }
 
   return (<> 
   <h1 className="px-10 text-xl font-semibold text-gray-200 pb-0">Top Movers</h1>

@@ -26,7 +26,7 @@ export default function HomePage() {
           Track prices, spot trends, and follow market moves — all in one easy-to-use app, no crypto experience needed.
           </p>
           <div className="flex items-center gap-4 flex-wrap">
-            <button className="bg-purple-600 text-white px-6 py-3 rounded-full font-medium flex items-center gap-2 shadow-md hover:bg-violet-600" onClick={()=>navigate("/Overview/")}>
+            <button className="bg-purple-600 text-white px-6 py-3 rounded-full font-medium flex items-center gap-2 shadow-md hover:bg-violet-600 hover:cursor-pointer" onClick={()=>navigate("/Overview/")}>
               Start Now  <span className="text-xl">➤</span>
             </button>
             {/* <button className="border border-purple-500 text-purple-400 px-6 py-3 rounded-full font-medium shadow-md">
@@ -35,11 +35,11 @@ export default function HomePage() {
           </div>
 
           {/* News Card */}
-          <div className="mt-10 bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm w-[300px]">
+          {/* <div className="mt-10 bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur-sm w-[300px]">
             <p className="text-white text-sm font-semibold mb-1">News Headling will be this text..</p>
             <p className="text-gray-400 text-xs">News element is here and Heading will be this text...</p>
             <button className="mt-3 text-xs text-purple-400 font-semibold underline">More info</button>
-          </div>
+          </div> */}
         </div>
 
         {/* Right Side - Images */}
@@ -69,7 +69,7 @@ export default function HomePage() {
           <span className="text-green-400 font-bold">MW</span>
           <span className="text-purple-400 font-bold">¥</span>
         </div>
-        <div className="text-center md:text-right">© 2025 CoinTracker. All rights reserved.</div>
+        <div className="text-center md:text-right">© 2025 BlockPulse. All rights reserved.</div>
       </footer>
     </div>
   );

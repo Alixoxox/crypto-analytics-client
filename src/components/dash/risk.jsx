@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { riskTypes, assessRisk } from "@/utils/extras";
 import { useNavigate } from "react-router-dom";
-
-export default function RiskAssessmentTable({ allAssets }) {
+import { MdArrowDropUp,MdArrowDropDown } from "react-icons/md";
+export default function RiskAssessmentTable({ allAssets,hide }) {
   const navigate = useNavigate();
   const [filter, setFilter] = useState(null);
   const [page, setPage] = useState(0);
@@ -44,7 +44,7 @@ export default function RiskAssessmentTable({ allAssets }) {
   }, [filter]);
 
   return (
-    <div className="text-white p-6 pt-0 rounded-xl mx-auto">
+    <div className="text-white p-0 md:p-6 pt-0 rounded-xl mx-auto">
       {/* Filter Buttons */}
       <div className="flex flex-wrap gap-2 mb-4">
         {riskTypes.map((type) => (
@@ -87,9 +87,15 @@ export default function RiskAssessmentTable({ allAssets }) {
                   <img src={asset.image} alt="" className="w-5 h-5" />
                   {asset.coinId}
                 </td>
-                <td className="px-4 py-3">${asset.current_price.toLocaleString()}</td>
-                <td className="px-4 py-3">
-                  {asset.price_change_percentage_24h.toFixed(2)}%
+                <td className="px-4 py-3">${asset.current_price}</td>
+                <td
+                  className={`px-4 py-3 font-semibold  ${
+                    asset.price_change_percentage_24h > 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >{asset.price_change_percentage_24h > 0 ? (
+                  <MdArrowDropUp className="inline" />) : (
+                  <MdArrowDropDown className="inline" />)}
+                   {asset.price_change_percentage_24h.toFixed(2)}%
                 </td>
                 <td className="px-4 py-3 flex gap-2 flex-wrap">
                   {asset.risk.map((tag) => (
@@ -114,7 +120,7 @@ export default function RiskAssessmentTable({ allAssets }) {
           </tbody>
         </table>
       </div>
-{allAssets.length >2 &&(
+{!hide &&(
   (<div className="flex justify-center mt-4 gap-2">
     <button
       onClick={() => setPage(p => Math.max(0, p - 1))}

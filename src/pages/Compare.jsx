@@ -2,13 +2,14 @@ import LoadingScreen from '@/components/Loading';
 import CoinViewNavbar from '@/components/navbar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip } from '@/components/ui/chart';
+import { UserContext } from '@/context/main';
 import { Comparecoins, getCoinNames } from '@/utils/fetchdata';
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo, use, useContext } from 'react';
 import {useParams } from 'react-router-dom';
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 const CompareHeader = () => {
-  const [coinList, setCoinList] = useState([]);
+  const {coinList, setCoinList}=useContext(UserContext);
   const [coin1, setCoin1] = useState('');
   const [coin2, setCoin2] = useState('');
   const [coin1Input, setCoin1Input] = useState('');
@@ -36,6 +37,7 @@ const CompareHeader = () => {
         console.error('Failed to fetch coins:', error);
       }
     };
+    if(coinList.length > 0) return; 
     fetchCoins();
   }, []);
 
@@ -138,7 +140,7 @@ const CompareHeader = () => {
 
   const formatPrice = (num) => {
     if (typeof num !== 'number' || isNaN(num)) return 'N/A';
-    return `$${num.toLocaleString()}`;
+    return `$${num}`;
   };
 
   const formatPercentage = (num) => {
@@ -150,8 +152,7 @@ const CompareHeader = () => {
     <div className="min-h-screen bg-[#1a1a1a] font-spaceGrotesk text-white">
       <CoinViewNavbar />
       <div className="px-10 py-5 gap-1">
-                <h1 className="text-3xl font-bold tracking-tight mb-1 text-white">
-Compare</h1>
+                <h1 className="text-3xl font-bold tracking-tight mb-1 text-white">Compare</h1>
         <p className="text-gray-400 py-1">
           Stay ahead with real-time insights into the crypto market. Track top performers, analyze trends, and make well informed decisions.
         </p>
@@ -172,9 +173,13 @@ Compare</h1>
                 {coin1}
               </div>
             )}
-            {showCoin1Dropdown && coin1Input && filteredCoins1.length > 0 && (
+            {showCoin1Dropdown && coin1Input && (
               <ul className="absolute z-10 bg-[#2a2a2a] mt-1 w-full max-h-40 overflow-y-auto rounded border border-gray-600">
-                {filteredCoins1.map((name, idx) => (
+                 {filteredCoins1.length === 0 ? (
+                  <li className="px-4 py-2 text-gray-400 cursor-default">
+                    No results found
+                  </li>
+                ) : ( filteredCoins1.map((name, idx) => (
                   <li
                     key={idx}
                     className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
@@ -182,7 +187,7 @@ Compare</h1>
                   >
                     {name}
                   </li>
-                ))}
+                )))}
               </ul>
             )}
           </div>
@@ -203,9 +208,13 @@ Compare</h1>
                 {coin2}
               </div>
             )}
-            {showCoin2Dropdown && coin2Input && filteredCoins2.length > 0 && (
+            {showCoin2Dropdown && coin2Input  && (
               <ul className="absolute z-10 bg-[#2a2a2a] mt-1 w-full max-h-40 overflow-y-auto rounded border border-gray-600">
-                {filteredCoins2.map((name, idx) => (
+                 {filteredCoins2.length === 0 ? (
+                  <li className="px-4 py-2 text-gray-400 cursor-default">
+                    No results found
+                  </li>
+                ) : (filteredCoins2.map((name, idx) => (
                   <li
                     key={idx}
                     className="px-4 py-2 hover:bg-gray-700 cursor-pointer"
@@ -213,7 +222,7 @@ Compare</h1>
                   >
                     {name}
                   </li>
-                ))}
+                )))}
               </ul>
             )}
           </div>
@@ -331,7 +340,7 @@ Compare</h1>
                                 {entry.dataKey === 'coin1Price' ? 
                                   coin1Data.coinId?.charAt(0).toUpperCase() + coin1Data.coinId?.slice(1) : 
                                   coin2Data.coinId?.charAt(0).toUpperCase() + coin2Data.coinId?.slice(1)
-                                }: ${entry.value?.toLocaleString()}
+                                }: ${entry.value}
                               </p>
                             ))}
                           </div>
