@@ -1,4 +1,4 @@
-import { use, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   Bell,
   TrendingUp,
@@ -13,12 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import LoadingScreen from '@/components/Loading';
 
 const icons = {
-  "Price Increase": <TrendingUp className="w-5 h-5 text-white" />,
-  "Price Decrease": <TrendingDown className="w-5 h-5 text-white" />,
+  "🚀": <TrendingUp className="w-5 h-5 text-white" />,
   "Market Update": <BarChart className="w-5 h-5 text-white" />,
-  "Exchange News": <Newspaper className="w-5 h-5 text-white" />,
-  "Portfolio Update": <BarChart className="w-5 h-5 text-white" />,
-  "Educational Content": <GraduationCap className="w-5 h-5 text-white" />,
+  // "Exchange News": <Newspaper className="w-5 h-5 text-white" />,
+  // "Portfolio Update": <BarChart className="w-5 h-5 text-white" />,
+  // "Educational Content": <GraduationCap className="w-5 h-5 text-white" />,
 };
 
 export default function Notifications() {
@@ -53,6 +52,11 @@ export default function Notifications() {
 
     fetchData();
   }, []);
+  const getIcon = (title) => {
+    if (!title) return <Bell className="w-5 h-5 text-white" />;
+    const key = Object.keys(icons).find(k => title.startsWith(k) || title.includes(k));
+    return key ? icons[key] : <Bell className="w-5 h-5 text-white" />;
+  };
   if(loading) return <LoadingScreen/>;
   return (<>
   <CoinViewNavbar/>
@@ -62,8 +66,7 @@ export default function Notifications() {
         {notifications.map((n, i) => (
           <div key={i} className="flex items-start gap-4">
             <div className="bg-[#262626] p-3 rounded-lg">
-              {icons[n.title] || <Bell className="w-5 h-5 text-white" />}
-            </div>
+            {getIcon(n.title)}            </div>
             <div>
               <h3 className="text-sm font-bold capitalize">{n.title}</h3>
               <p className="text-sm font-semibold text-gray-400 capitalize">{n.message}</p>

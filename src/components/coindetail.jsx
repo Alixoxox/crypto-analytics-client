@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useContext } from "react";
+import React, { useState, useMemo, useEffect, useContext, use } from "react";
 import { AreaChart, Area, CartesianGrid, XAxis, YAxis} from "recharts";
 import {  Card, CardHeader, CardTitle, CardDescription, CardContent} from "@/components/ui/card";
 import {  ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent} from "@/components/ui/chart";
@@ -16,6 +16,8 @@ const decodedId = decodeURIComponent(id);
 
 const [loading, setLoading] = useState(true);
 const [range, setRange] = useState("all");
+const [predictPrice, setPredictPrice] = useState([]);
+const [futureTime, setFutureTime] = useState([]);
 
 useEffect(() => {
   const fetchData = async () => {
@@ -33,21 +35,54 @@ useEffect(() => {
   };
   fetchData();
 }, [id]);
+useEffect(() => {
+  const FetchPrediction=async()=>{
+    try {
+      const token = localStorage.getItem("jwt");
+      const response = await fetch(`http://127.0.0.1:8080/user/predict?coin=${decodedId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setFutureTime(data[0].predictedTime);
+      setPredictPrice(data[0].predictedPrice);
+    } catch (error) {
+      console.error("Error fetching prediction:", error);
+    }
+  }
+  if(!user.email) return;
+  FetchPrediction();
+  
+  },[decodedId,user.email]);
 
 // move hook calls OUTSIDE conditional branches
 const fullData = useMemo(() => {
   if (!viewCoin?.timestamps || !viewCoin?.prices) return [];
   return viewCoin?.timestamps.map((ts, i) => ({
-    date: new Date(ts),
+    date: new Date(Number(ts)),
     price: viewCoin?.prices[i],
   })).reverse();
 }, [viewCoin]);
 
+const futureData = useMemo(() => {
+  // const prevData=fullData || [];
+  if (!predictPrice || !futureTime) return [];
+  const predictedData = futureTime.map((ts, i) => ({
+    date: new Date(Number(ts)),
+    price: predictPrice[i],
+  }))
+    return predictedData
+}, [predictPrice, futureTime]);
+
 const visibleData = useMemo(() => {
   if (range === "all") return fullData;
+  if (range === "Future") return futureData;
   const count = range === "30d" ? 30 : 7;
   return fullData.slice(0, count);
-}, [range, fullData]);
+}, [range, futureData,fullData]);
 
 const formatDate = (date) => {
   return date.toLocaleDateString("en-US", {
@@ -113,8 +148,6 @@ const coin = viewCoin?.lastestShot;
    
   </div>
 </CardHeader>
-
-
       <CardContent className="space-y-6">
         {/* Live Price */}
         <div>
@@ -132,14 +165,14 @@ const coin = viewCoin?.lastestShot;
 
         {/* Chart Filter Buttons */}
         <div className="flex gap-2">
-          {["7d", "30d", "all"].map((opt) => (
+          {["7d", "30d", "all", "Future"].map((opt) => (
             <Button
               key={opt}
               variant={range === opt ? "default" : "outline"}
-              onClick={() => setRange(opt)}
+              onClick={() =>{opt==="Future" && !user.email ? navigate("/account/login") : ""; setRange(opt)}}
               className="capitalize"
-            >
-              {opt === "7d" ? "7 Days" : opt === "30d" ? "1 Month" : "All Time"}
+            > 
+              {opt === "7d" ? "7 Days" : opt === "30d" ? "1 Month" :opt=="Future"?"Next 24h": "All Time"}
             </Button>
           ))}
         </div>
@@ -178,23 +211,28 @@ const coin = viewCoin?.lastestShot;
               tickLine={false}
               axisLine={false}
             />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(label) =>
-                    `Time: ${label.toLocaleString("en-US", {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      day: "numeric",
-                      month: "short",
-                    })}`
-                  }
-                  valueFormatter={(value) =>
-                    `$${Number(value).toLocaleString()}`
-                  }
-                />
-              }
-            />
+<ChartTooltip
+  content={({ payload }) => {
+    if (!payload || !payload.length) return null;
+    const data = payload[0].payload; // this is your data object
+    const date = new Date(data.date); // your stored Date object
+    return (
+      <div className="bg-black p-2 text-white rounded">
+        <div>
+          {date.toLocaleString("en-US", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+          })}
+        </div>
+        <div>
+          Price: ${data.price.toFixed(6)}
+        </div>
+      </div>
+    );
+  }}
+/>
             <Area
               dataKey="price"
               type="monotone"
@@ -207,7 +245,7 @@ const coin = viewCoin?.lastestShot;
           </AreaChart>
         </ChartContainer>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8 mt-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8 mt-6">
   {/* Market Cap */}
   <div className="bg-[#2a2a2a] rounded-lg p-4 border border-gray-700 hover:border-gray-600 transition-colors">
     <div className="flex items-center justify-between mb-2">

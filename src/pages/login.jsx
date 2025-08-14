@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import CoinViewNavbar from '@/components/navbar';
 import { useNavigate } from 'react-router-dom';
@@ -92,9 +92,6 @@ export default function LoginComponent() {
                   className="w-full px-3 py-2.5 sm:py-3 border bg-inherit border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none focus:border-transparent text-sm sm:text-base"
                 />
               </div>
-
-              
-
               {/* Sign in button */}
               <button
                 onClick={handleSubmit}
