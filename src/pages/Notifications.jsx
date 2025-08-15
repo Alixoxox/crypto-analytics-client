@@ -11,6 +11,7 @@ import CoinViewNavbar from '@/components/navbar';
 import { UserContext } from '@/context/main';
 import { useNavigate } from 'react-router-dom';
 import LoadingScreen from '@/components/Loading';
+import { API_BASE_URL } from '@/utils/fetchdata';
 
 const icons = {
   "🚀": <TrendingUp className="w-5 h-5 text-white" />,
@@ -34,10 +35,11 @@ export default function Notifications() {
     const fetchData = async () => {
       setLoading(true);
       const token=localStorage.getItem("jwt");
-      const res = await fetch("http://localhost:8080/user/notify",{
+      const res = await fetch(`${API_BASE_URL}/user/notify`,{
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
+           "ngrok-skip-browser-warning": "1",
           "Content-Type": "application/json"
         },body: JSON.stringify({ email: user.email})
       })

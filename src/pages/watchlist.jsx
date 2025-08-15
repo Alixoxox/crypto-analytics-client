@@ -6,7 +6,7 @@ import { getCoinNames } from "@/utils/fetchdata";
 import { useNavigate } from "react-router-dom";
 import { MdArrowDropUp, MdArrowDropDown } from "react-icons/md";
 import LoadingScreen from "@/components/Loading";
-
+import { API_BASE_URL } from "@/utils/fetchdata";
 export default function WatchlistPage() {
   const navigate = useNavigate();
   const { coinList, setCoinList, user } = useContext(UserContext);
@@ -42,11 +42,12 @@ export default function WatchlistPage() {
   const fetchwatchingCoins = async () => {
     try {
       const token = localStorage.getItem("jwt");
-      const res = await fetch("http://localhost:8080/user/view/watching", {
+      const res = await fetch(`${API_BASE_URL}/user/view/watching`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
+           "ngrok-skip-browser-warning": "1"
         },
         body: JSON.stringify({ email: user.email }),
       });
@@ -73,6 +74,7 @@ export default function WatchlistPage() {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+         "ngrok-skip-browser-warning": "1",
         "Authorization": `Bearer ${token}`,
       },body: JSON.stringify({
         email: user.email,
@@ -98,6 +100,7 @@ export default function WatchlistPage() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
+         "ngrok-skip-browser-warning": "1"
       },body: JSON.stringify({
         email: user.email,
         coinName: searchTerm.trim()})

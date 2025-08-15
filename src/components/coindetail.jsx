@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {  getIndividualCoin } from "@/utils/fetchdata";
 import { UserContext } from "@/context/main";
 import LoadingScreen from "./Loading";
+import { API_BASE_URL } from "@/utils/fetchdata";
 const CoinSnapshot = () => {
 const { viewCoin, setviewCoin,user } = useContext(UserContext);
 const { id } = useParams();
@@ -39,10 +40,11 @@ useEffect(() => {
   const FetchPrediction=async()=>{
     try {
       const token = localStorage.getItem("jwt");
-      const response = await fetch(`http://127.0.0.1:8080/user/predict?coin=${decodedId}`, {
+      const response = await fetch(`${API_BASE_URL}/user/predict?coin=${decodedId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+           "ngrok-skip-browser-warning": "1",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -81,7 +83,7 @@ const visibleData = useMemo(() => {
   if (range === "all") return fullData;
   if (range === "Future") return futureData;
   const count = range === "30d" ? 30 : 7;
-  return fullData.slice(0, count);
+  return fullData.slice(-count);
 }, [range, futureData,fullData]);
 
 const formatDate = (date) => {
@@ -93,7 +95,7 @@ const formatDate = (date) => {
 const AddCoin=async(decodedId)=>{
   console.log("Adding coin to watchlist:", decodedId);
 const token = localStorage.getItem("jwt");
-  await fetch("http://localhost:8080/user/add/watching", {
+  await fetch(`${API_BASE_URL}/user/add/watching`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

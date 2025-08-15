@@ -1,6 +1,13 @@
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+export async function getCoins() {
+  const response = await fetch(`${API_BASE_URL}/api/coins`);
+  return response.json();
+}
+
 export const GettrendingCoins = async () => {
   try {
-    const response= await fetch("http://127.0.0.1:8080/coins/trending")
+    const response= await fetch(`${API_BASE_URL}/coins/trending`,{headers: {"ngrok-skip-browser-warning": "1"}})
       if (!response.ok) throw new Error('Backend Down For Maintenance');
       return response.json();
     
@@ -11,7 +18,7 @@ export const GettrendingCoins = async () => {
 };
 export const PING = async () => {
   try {
-    const response= await fetch("http://127.0.0.1:8080/ping")
+    const response= await fetch(`${API_BASE_URL}/ping`,{headers: {"ngrok-skip-browser-warning": "1"}})
       if (!response.ok) throw new Error('Backend Down For Maintenance');
       return ;
     
@@ -22,7 +29,7 @@ export const PING = async () => {
 
 export const getTopMovers = async () => {
   try {
-   const response=await fetch("http://127.0.0.1:8080/coins/gainers")
+   const response=await fetch(`${API_BASE_URL}/coins/gainers`,{headers: {"ngrok-skip-browser-warning": "1"}})
    
       if (!response.ok) throw new Error("Failed to fetch");
       let data= response.json(); // ← IMPORTANT: parse the JSON
@@ -38,7 +45,7 @@ export const getTopMovers = async () => {
 
 export const getchartData = async (coinId) => {
   try{
-    const response=await fetch(`http://127.0.0.1:8080/coins/chart?name=${coinId}`)
+    const response=await fetch(`${API_BASE_URL}/coins/chart?name=${coinId}`,{headers: {"ngrok-skip-browser-warning": "1"}})
     if(!response) throw new Error("Failed to fetch chart data");
     return response.json()
   }catch(err){
@@ -48,7 +55,7 @@ export const getchartData = async (coinId) => {
 
 export const getMarketreview = async () => {
   try{
-    const response=await fetch(`http://127.0.0.1:8080/market/info`)
+    const response=await fetch(`${API_BASE_URL}/market/info`,{headers: {"ngrok-skip-browser-warning": "1"}})
     if(!response) throw new Error("Failed to fetch market data");
     return response.json();
   }catch(err){  
@@ -57,7 +64,7 @@ export const getMarketreview = async () => {
   }}
   export const getIndividualCoin = async (coinId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8080/coin/detail?id=${coinId}`);
+      const response = await fetch(`${API_BASE_URL}/coin/detail?id=${coinId}`,{headers: {"ngrok-skip-browser-warning": "1"}});
   
       if (!response.ok) {
         const errData = await response.json()  
@@ -74,7 +81,7 @@ export const getMarketreview = async () => {
 
   export const getTopRakers=async(limit)=>{
     try {
-      const response = await fetch(`http://127.0.0.1:8080/coins/topRank?limit=${limit}`);
+      const response = await fetch(`${API_BASE_URL}/coins/topRank?limit=${limit}`,{headers: {"ngrok-skip-browser-warning": "1"}});
       if (!response.ok) {
         const errData = await response.json()  
         throw new Error(errData  || 'Failed to fetch data');
@@ -88,7 +95,7 @@ export const getMarketreview = async () => {
   }
   export const getCoinNames=async(limit)=>{
     try {
-      const response = await fetch(`http://127.0.0.1:8080/coins/name`);
+      const response = await fetch(`${API_BASE_URL}/coins/name`,{headers: {"ngrok-skip-browser-warning": "1"}});
       if (!response.ok) {
         const errData = await response.json()  
         throw new Error(errData  || 'Failed to fetch data');
@@ -101,7 +108,7 @@ export const getMarketreview = async () => {
     }
   }
 export const Comparecoins = async (coin1, coin2) => {
-try{ const response = await fetch(`http://127.0.0.1:8080/coins/compare?coin1=${coin1}&coin2=${coin2}`);
+try{ const response = await fetch(`${API_BASE_URL}/coins/compare?coin1=${coin1}&coin2=${coin2}`,{headers: {"ngrok-skip-browser-warning": "1"}});
   if (!response.ok) {
     const errData = await response.json()  
     throw new Error(errData  || 'Failed to fetch data');
@@ -119,10 +126,11 @@ export const googleLogin = async (name,email,picture,sub) => {
   try {
     if(!name && !email && !picture && !sub){
     throw new Error("Invalid user data");}
-    const response = await fetch("http://127.0.0.1:8080/google/", {
+    const response = await fetch(`${API_BASE_URL}/google/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "1"
       },
       body: JSON.stringify({
         email: email,
@@ -146,10 +154,11 @@ export const LoginManual = async (email, password) => {
 try{
   if( !email && !password){
   throw new Error("Invalid user data");}
-  const response = await fetch("http://127.0.0.1:8080/login/", {
+  const response = await fetch(`${API_BASE_URL}/login/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+       "ngrok-skip-browser-warning": "1"
     },
     body: JSON.stringify({
       email: email,
@@ -173,10 +182,11 @@ export const Registration = async (name,email, password) => {
     console.log("Registration called with:", { name, email, password });
     if(!name && !email && !password){
     throw new Error("Invalid user data");}
-    const response = await fetch("http://127.0.0.1:8080/signup/", {
+    const response = await fetch(`${API_BASE_URL}/signup/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+         "ngrok-skip-browser-warning": "1"
       },
       body: JSON.stringify({
         name: name,
@@ -202,10 +212,11 @@ export const changePassword = async (email, Password) => {
   try{
     if( !email && !Password){
     throw new Error("Invalid user data");}
-    const response = await fetch("http://127.0.0.1:8080/account/changePass", {
+    const response = await fetch(`${API_BASE_URL}/account/changePass`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+         "ngrok-skip-browser-warning": "1"
       },
       body: JSON.stringify({
         email: email,
@@ -227,10 +238,11 @@ export const changePassword = async (email, Password) => {
     try{
       if( !email && !googleId){
       throw new Error("Invalid user data");}
-      const response = await fetch("http://127.0.0.1:8080/account/linkG", {
+      const response = await fetch(`${API_BASE_URL}/account/linkG`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+           "ngrok-skip-browser-warning": "1"
         },
         body: JSON.stringify({
           email: email,
@@ -254,10 +266,11 @@ export const changePassword = async (email, Password) => {
       try{
         if( !email ){
         throw new Error("Invalid user data");}
-        const response = await fetch("http://127.0.0.1:8080/account/UnlinkG", {
+        const response = await fetch(`${API_BASE_URL}/account/UnlinkG`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+             "ngrok-skip-browser-warning": "1"
           },
           body: JSON.stringify({
             email: email,
@@ -280,10 +293,11 @@ export const DeleteAcc = async (email) => {
         try{
           if( !email){
           throw new Error("Invalid user data");}
-          const response = await fetch("http://127.0.0.1:8080/account/delete", {
+          const response = await fetch(`${API_BASE_URL}/account/delete`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+               "ngrok-skip-browser-warning": "1"
             },
             body: JSON.stringify({
               email: email,
@@ -306,8 +320,11 @@ export const DeleteAcc = async (email) => {
           const formData = new FormData();
           formData.append("file", file);
         
-          const res = await fetch(`http://localhost:8080/imgUpload/${email}`, {
+          const res = await fetch(`${API_BASE_URL}/imgUpload/${email}`, {
             method: "POST",
+            headers: {
+              "ngrok-skip-browser-warning": "1"
+            },
             body: formData,
           });
         
