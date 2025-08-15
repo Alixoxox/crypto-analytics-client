@@ -35,7 +35,7 @@ export default function AccountSettings() {
   };
   const handleUpdateProfile = async () => {
     if (!profilePic) return alert("Please select an image first.");
-    setUser({ ...user, picture: profilePic });
+    setUser({ ...user, picture: preview });
     setPreview(null);
     setProfilePic(null);
     await uploadImage(profilePic, user.email);
