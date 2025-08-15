@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -10,11 +10,9 @@ import { PING } from './utils/fetchdata.js';
 import { checktoken } from './utils/extras.js';
 import AccountSettings from './pages/account.jsx';
 import Market from './pages/Market.jsx';
-import { UserContext } from './context/main.jsx';
 import WatchlistPage from './pages/watchlist.jsx';
 import Notifications from './pages/Notifications.jsx';
 function App() {
-  const {user} = useContext(UserContext);
   useEffect(() => {
     async () => {
      await PING();
