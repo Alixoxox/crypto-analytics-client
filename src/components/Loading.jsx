@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar"; // adjust the import path as needed
+import Navbar from "@/components/navbar"; // adjust the import path as needed
 
 const LoadingScreen = () => {
   return (
