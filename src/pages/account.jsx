@@ -35,12 +35,10 @@ export default function AccountSettings() {
   };
   const handleUpdateProfile = async () => {
     if (!profilePic) return alert("Please select an image first.");
-    const data = await uploadImage(profilePic, user.email);
-    if (data?.url) {
-      setUser({ ...user, picture: data.url });
-      setPreview(null);
-      setProfilePic(null);
-    }
+    setUser({ ...user, picture: profilePic });
+    setPreview(null);
+    setProfilePic(null);
+    await uploadImage(profilePic, user.email);
   };
 
   const handleLogout = () => {setUser({ name: null, email: null, sub: null, picture: null });localStorage.removeItem("jwt");navigate("/account/login");};
