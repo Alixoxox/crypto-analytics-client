@@ -78,13 +78,21 @@ const futureData = useMemo(() => {
   }))
     return predictedData
 }, [predictPrice, futureTime]);
-
 const visibleData = useMemo(() => {
   if (range === "all") return fullData;
   if (range === "Future") return futureData;
-  const count = range === "30d" ? 30 : 7;
-  return fullData.slice(-count);
-}, [range, futureData,fullData]);
+
+  const now = Date.now();
+  let cutoff;
+
+  if (range === "30d") {
+    cutoff = now - 30 * 24 * 60 * 60 * 1000; // 30 days in ms
+  } else if (range === "7d") {
+    cutoff = now - 7 * 24 * 60 * 60 * 1000; // 7 days in ms
+  }
+
+  return fullData.filter(d => d.date.getTime() >= cutoff);
+}, [range, fullData, futureData]);
 
 const formatDate = (date) => {
   return date.toLocaleDateString("en-US", {
