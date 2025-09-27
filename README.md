@@ -12,7 +12,7 @@ It provides real-time market insights including top gainers, trending coins, ris
 - 📈 Interactive charts and visualizations  
 - 📑 Watchlist & Compare coins  
 - 📲 Responsive UI with TailwindCSS + shadcn/ui  
-
+- Coin Future Prediction via Facebook Prophet Model
 ---
 
 ## ⚙️ Setup
