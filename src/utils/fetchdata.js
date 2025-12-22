@@ -7,7 +7,7 @@ export async function getCoins() {
 
 export const GettrendingCoins = async () => {
   try {
-    const response= await fetch(`${API_BASE_URL}/coins/trending`,{headers: {"ngrok-skip-browser-warning": "1"}})
+    const response= await fetch(`${API_BASE_URL}/coins/trending`)
       if (!response.ok) throw new Error('Backend Down For Maintenance');
       return response.json();
     
@@ -18,7 +18,7 @@ export const GettrendingCoins = async () => {
 };
 export const PING = async () => {
   try {
-    const response= await fetch(`${API_BASE_URL}/ping`,{headers: {"ngrok-skip-browser-warning": "1"}})
+    const response= await fetch(`${API_BASE_URL}/ping`)
       if (!response.ok) throw new Error('Backend Down For Maintenance');
       return ;
     
@@ -29,7 +29,7 @@ export const PING = async () => {
 
 export const getTopMovers = async () => {
   try {
-   const response=await fetch(`${API_BASE_URL}/coins/gainers`,{headers: {"ngrok-skip-browser-warning": "1"}})
+   const response=await fetch(`${API_BASE_URL}/coins/gainers`)
    
       if (!response.ok) throw new Error("Failed to fetch");
       let data= response.json(); // ← IMPORTANT: parse the JSON
@@ -45,7 +45,7 @@ export const getTopMovers = async () => {
 
 export const getchartData = async (coinId) => {
   try{
-    const response=await fetch(`${API_BASE_URL}/coins/chart?name=${coinId}`,{headers: {"ngrok-skip-browser-warning": "1"}})
+    const response=await fetch(`${API_BASE_URL}/coins/chart?name=${coinId}`)
     if(!response) throw new Error("Failed to fetch chart data");
     return response.json()
   }catch(err){
@@ -55,7 +55,7 @@ export const getchartData = async (coinId) => {
 
 export const getMarketreview = async () => {
   try{
-    const response=await fetch(`${API_BASE_URL}/market/info`,{headers: {"ngrok-skip-browser-warning": "1"}})
+    const response=await fetch(`${API_BASE_URL}/market/info`)
     if(!response) throw new Error("Failed to fetch market data");
     return response.json();
   }catch(err){  
@@ -64,7 +64,7 @@ export const getMarketreview = async () => {
   }}
   export const getIndividualCoin = async (coinId) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/coin/detail?id=${coinId}`,{headers: {"ngrok-skip-browser-warning": "1"}});
+      const response = await fetch(`${API_BASE_URL}/coin/detail?id=${coinId}`);
   
       if (!response.ok) {
         const errData = await response.json()  
@@ -81,7 +81,7 @@ export const getMarketreview = async () => {
 
   export const getTopRakers=async(limit)=>{
     try {
-      const response = await fetch(`${API_BASE_URL}/coins/topRank?limit=${limit}`,{headers: {"ngrok-skip-browser-warning": "1"}});
+      const response = await fetch(`${API_BASE_URL}/coins/topRank?limit=${limit}`);
       if (!response.ok) {
         const errData = await response.json()  
         throw new Error(errData  || 'Failed to fetch data');
@@ -95,7 +95,7 @@ export const getMarketreview = async () => {
   }
   export const getCoinNames=async(limit)=>{
     try {
-      const response = await fetch(`${API_BASE_URL}/coins/name`,{headers: {"ngrok-skip-browser-warning": "1"}});
+      const response = await fetch(`${API_BASE_URL}/coins/name`);
       if (!response.ok) {
         const errData = await response.json()  
         throw new Error(errData  || 'Failed to fetch data');
@@ -108,7 +108,7 @@ export const getMarketreview = async () => {
     }
   }
 export const Comparecoins = async (coin1, coin2) => {
-try{ const response = await fetch(`${API_BASE_URL}/coins/compare?coin1=${coin1}&coin2=${coin2}`,{headers: {"ngrok-skip-browser-warning": "1"}});
+try{ const response = await fetch(`${API_BASE_URL}/coins/compare?coin1=${coin1}&coin2=${coin2}`);
   if (!response.ok) {
     const errData = await response.json()  
     throw new Error(errData  || 'Failed to fetch data');

@@ -3,7 +3,7 @@ import { Search, Bell, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '@/context/main';
 import { Button } from './ui/button';
-import fallbackimg from '@/assets/userplaceholder.png';
+import fallbackimg from '@/assets/userplaceholder.webp';
 import { getCoinNames } from '@/utils/fetchdata';
 
 export default function CoinViewNavbar() {

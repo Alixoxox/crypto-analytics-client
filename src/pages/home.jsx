@@ -1,7 +1,7 @@
 // Coinalytix - One-to-one replica of BlockPulse hero using Tailwind CSS
-import Back from "../assets/back-home.png"
-import main from "../assets/main-home.png"
-import background from "../assets/background.png"
+import Back from "../assets/back-home.webp"
+import main from "../assets/main-home.webp"
+import background from "../assets/background.webp"
 import Homenav from "@/components/homenav";
 import { useNavigate } from "react-router-dom";
 export default function HomePage() {
