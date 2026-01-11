@@ -124,13 +124,11 @@ try{ const response = await fetch(`${API_BASE_URL}/coins/compare?coin1=${coin1}&
 
 export const googleLogin = async (name,email,picture,sub) => {
   try {
-    if(!name && !email && !picture && !sub){
-    throw new Error("Invalid user data");}
+    if (!name || !email || !picture || !sub) throw new Error("Invalid user data");
     const response = await fetch(`${API_BASE_URL}/google/`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "1"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         email: email,
@@ -152,13 +150,12 @@ export const googleLogin = async (name,email,picture,sub) => {
 
 export const LoginManual = async (email, password) => {
 try{
-  if( !email && !password){
+  if( !email || !password){
   throw new Error("Invalid user data");}
   const response = await fetch(`${API_BASE_URL}/login/`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-       "ngrok-skip-browser-warning": "1"
+      "Content-Type": "application/json"
     },
     body: JSON.stringify({
       email: email,
@@ -178,15 +175,12 @@ return data.User;
 }}
 export const Registration = async (name,email, password) => {
   try{
-    console.log("Registration called with:", { name, email, password });
-    if(!name && !email && !password){
-    throw new Error("Invalid user data");}
+    if (!name || !email || !password) throw new Error("Invalid user data");
     const response = await fetch(`${API_BASE_URL}/signup/`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-         "ngrok-skip-browser-warning": "1"
-      },
+        "Content-Type": "application/json"
+       },
       body: JSON.stringify({
         name: name,
         email: email,
@@ -214,9 +208,8 @@ export const changePassword = async (email, Password) => {
     const response = await fetch(`${API_BASE_URL}/account/changePass`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-         "ngrok-skip-browser-warning": "1"
-      },
+        "Content-Type": "application/json"
+       },
       body: JSON.stringify({
         email: email,
         password: Password,
@@ -240,9 +233,8 @@ export const changePassword = async (email, Password) => {
       const response = await fetch(`${API_BASE_URL}/account/linkG`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-           "ngrok-skip-browser-warning": "1"
-        },
+          "Content-Type": "application/json"
+           },
         body: JSON.stringify({
           email: email,
           googleId: googleId,
@@ -268,9 +260,8 @@ export const changePassword = async (email, Password) => {
         const response = await fetch(`${API_BASE_URL}/account/UnlinkG`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-             "ngrok-skip-browser-warning": "1"
-          },
+            "Content-Type": "application/json"
+               },
           body: JSON.stringify({
             email: email,
           }),
@@ -295,9 +286,8 @@ export const DeleteAcc = async (email) => {
           const response = await fetch(`${API_BASE_URL}/account/delete`, {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
-               "ngrok-skip-browser-warning": "1"
-            },
+              "Content-Type": "application/json"
+                   },
             body: JSON.stringify({
               email: email,
             }),
@@ -322,8 +312,7 @@ export const DeleteAcc = async (email) => {
           const res = await fetch(`${API_BASE_URL}/imgUpload/${email}`, {
             method: "POST",
             headers: {
-              "ngrok-skip-browser-warning": "1"
-            },
+                  },
             body: formData,
           });
         

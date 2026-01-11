@@ -39,7 +39,6 @@ export default function Notifications() {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
-           "ngrok-skip-browser-warning": "1",
           "Content-Type": "application/json"
         },body: JSON.stringify({ email: user.email})
       })

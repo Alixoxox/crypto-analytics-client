@@ -21,58 +21,50 @@ const [predictPrice, setPredictPrice] = useState([]);
 const [futureTime, setFutureTime] = useState([]);
 
 useEffect(() => {
-  const fetchData = async () => {
+  const fetchAll = async () => {
+    setLoading(true);
     try {
-      const data = await getIndividualCoin(decodedId);
-      if (!data || data.error) {
+      const token = localStorage.getItem("jwt");
+
+      // fetch coin data and prediction in parallel
+      const [coinData, predictionData] = await Promise.all([
+        getIndividualCoin(decodedId),
+        fetch(`${API_BASE_URL}/user/predict?coin=${decodedId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }).then(res => res.json()),
+      ]);
+
+      // handle coin data
+      if (!coinData || coinData.error) {
         return navigate("/Overview/");
       }
-      setviewCoin(data);
+      setviewCoin(coinData);
+
+      // handle prediction data
+      if (predictionData?.length) {
+        const prediction = predictionData[0];
+        setFutureTime(prediction?.predictedTime || []);
+        setPredictPrice(prediction?.predictedPrice || []);
+      } else {
+        setFutureTime([]);
+        setPredictPrice([]);
+      }
     } catch (err) {
-      console.error("Failed to fetch data.");
+      console.error("Error fetching coin or prediction:", err);
+      setFutureTime([]);
+      setPredictPrice([]);
     } finally {
       setLoading(false);
     }
   };
-  fetchData();
-}, [id]);
-useEffect(() => {
-  const FetchPrediction = async () => {
-    try {
-      const token = localStorage.getItem("jwt");
-      const response = await fetch(`${API_BASE_URL}/user/predict?coin=${decodedId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "1",
-          Authorization: `Bearer ${token}`,
-        },
-      });
 
-      const data = await response.json();
-
-      // safety checks
-      if (!data || !Array.isArray(data) || data.length === 0) {
-        console.warn("Prediction API returned empty or invalid data:", data);
-        setFutureTime([]);
-        setPredictPrice([]);
-        return;
-      }
-
-      const prediction = data[0];
-      setFutureTime(prediction?.predictedTime || []);
-      setPredictPrice(prediction?.predictedPrice || []);
-    } catch (error) {
-      console.error("Error fetching prediction:", error);
-      setFutureTime([]);
-      setPredictPrice([]);
-    }
-  };
-
-  if (!user.email) return;
-
-  FetchPrediction();
+  fetchAll();
 }, [decodedId, user.email]);
+
 
 // move hook calls OUTSIDE conditional branches
 const fullData = useMemo(() => {
@@ -84,14 +76,14 @@ const fullData = useMemo(() => {
 }, [viewCoin]);
 
 const futureData = useMemo(() => {
-  // const prevData=fullData || [];
-  if (!predictPrice || !futureTime) return [];
-  const predictedData = futureTime.map((ts, i) => ({
-    date: new Date(Number(ts)),
+  if (!predictPrice?.length || !futureTime?.length) return [];
+  const length = Math.min(predictPrice.length, futureTime.length);
+  return Array.from({ length }, (_, i) => ({
+    date: new Date(Number(futureTime[i])),
     price: predictPrice[i],
-  }))
-    return predictedData
+  }));
 }, [predictPrice, futureTime]);
+
 const visibleData = useMemo(() => {
   if (range === "all") return fullData;
   if (range === "Future") return futureData;
@@ -191,14 +183,13 @@ const coin = viewCoin?.lastestShot;
         <div className="flex gap-2">
   {["7d", "30d", "all", "Future"].map((opt) => {
     // hide "Future" button if no prediction
-    if (opt === "Future" && (!futureTime.length || !predictPrice.length)) return null;
+    if (opt === "Future" && !futureData.length) return null;
 
     return (
       <Button
         key={opt}
         variant={range === opt ? "default" : "outline"}
         onClick={() => {
-          if (opt === "Future" && !user.email) return navigate("/account/login");
           setRange(opt);
         }}
         className="capitalize"

@@ -47,7 +47,6 @@ export default function WatchlistPage() {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
-           "ngrok-skip-browser-warning": "1"
         },
         body: JSON.stringify({ email: user.email }),
       });
@@ -74,7 +73,6 @@ export default function WatchlistPage() {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-         "ngrok-skip-browser-warning": "1",
         "Authorization": `Bearer ${token}`,
       },body: JSON.stringify({
         email: user.email,
@@ -100,7 +98,6 @@ export default function WatchlistPage() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
-         "ngrok-skip-browser-warning": "1"
       },body: JSON.stringify({
         email: user.email,
         coinName: searchTerm.trim()})
