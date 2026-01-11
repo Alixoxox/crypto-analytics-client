@@ -174,8 +174,7 @@ const data = await response.json();
 localStorage.setItem("jwt", data.token);
 return data.User;
 }catch(err) {
-console.error("Error in login :", err);
-return { error: err.message };
+  console.error("Error in login:", err.error || err.message || err);
 }}
 export const Registration = async (name,email, password) => {
   try{

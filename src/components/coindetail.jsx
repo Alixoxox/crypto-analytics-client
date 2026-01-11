@@ -37,28 +37,42 @@ useEffect(() => {
   fetchData();
 }, [id]);
 useEffect(() => {
-  const FetchPrediction=async()=>{
+  const FetchPrediction = async () => {
     try {
       const token = localStorage.getItem("jwt");
       const response = await fetch(`${API_BASE_URL}/user/predict?coin=${decodedId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-           "ngrok-skip-browser-warning": "1",
+          "ngrok-skip-browser-warning": "1",
           Authorization: `Bearer ${token}`,
         },
       });
+
       const data = await response.json();
-      setFutureTime(data[0].predictedTime);
-      setPredictPrice(data[0].predictedPrice);
+
+      // safety checks
+      if (!data || !Array.isArray(data) || data.length === 0) {
+        console.warn("Prediction API returned empty or invalid data:", data);
+        setFutureTime([]);
+        setPredictPrice([]);
+        return;
+      }
+
+      const prediction = data[0];
+      setFutureTime(prediction?.predictedTime || []);
+      setPredictPrice(prediction?.predictedPrice || []);
     } catch (error) {
       console.error("Error fetching prediction:", error);
+      setFutureTime([]);
+      setPredictPrice([]);
     }
-  }
-  if(!user.email) return;
+  };
+
+  if (!user.email) return;
+
   FetchPrediction();
-  
-  },[decodedId,user.email]);
+}, [decodedId, user.email]);
 
 // move hook calls OUTSIDE conditional branches
 const fullData = useMemo(() => {
@@ -175,17 +189,31 @@ const coin = viewCoin?.lastestShot;
 
         {/* Chart Filter Buttons */}
         <div className="flex gap-2">
-          {["7d", "30d", "all", "Future"].map((opt) => (
-            <Button
-              key={opt}
-              variant={range === opt ? "default" : "outline"}
-              onClick={() =>{opt==="Future" && !user.email ? navigate("/account/login") : ""; setRange(opt)}}
-              className="capitalize"
-            > 
-              {opt === "7d" ? "7 Days" : opt === "30d" ? "1 Month" :opt=="Future"?"Next 24h": "All Time"}
-            </Button>
-          ))}
-        </div>
+  {["7d", "30d", "all", "Future"].map((opt) => {
+    // hide "Future" button if no prediction
+    if (opt === "Future" && (!futureTime.length || !predictPrice.length)) return null;
+
+    return (
+      <Button
+        key={opt}
+        variant={range === opt ? "default" : "outline"}
+        onClick={() => {
+          if (opt === "Future" && !user.email) return navigate("/account/login");
+          setRange(opt);
+        }}
+        className="capitalize"
+      >
+        {opt === "7d"
+          ? "7 Days"
+          : opt === "30d"
+          ? "1 Month"
+          : opt === "Future"
+          ? "Next 24h"
+          : "All Time"}
+      </Button>
+    );
+  })}
+</div>
 
         {/* Area Chart */}
         <ChartContainer
