@@ -22,26 +22,37 @@ function App() {
     trendingCoins, settrendingCoins,
     marketreview, setmarketreview
   } = useContext(UserContext);
-
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDashboard = async () => {
       try {
-        const promises = [];
+        // 1. Truly essential data
+        const essentialPromises = [];
+        if (!btc?.prices?.length) essentialPromises.push(getchartData("bitcoin").then(setbtc));
+        if (!gainCoins.length) essentialPromises.push(getTopMovers().then(setgainCoins));
+        if (!Object.keys(marketreview).length) essentialPromises.push(getMarketreview().then(setmarketreview));
   
-        if (!gainCoins.length) promises.push(getTopMovers().then(setgainCoins));
-        if (!btc?.prices?.length) promises.push(getchartData("bitcoin").then(setbtc));
-        if (!trendingCoins.length) promises.push(GettrendingCoins().then(settrendingCoins));
-        if (!Object.keys(marketreview).length) promises.push(getMarketreview().then(setmarketreview));
-        if (!TopMarketData.length) promises.push(getTopRakers(10).then(setTopMarketData));
+        await Promise.allSettled(essentialPromises); // wait only for essentials
   
-        await Promise.all(promises);
+        // 2. Lazy load non-essential data
+        if (!TopMarketData.length) {
+          getTopRakers(10)
+            .then(setTopMarketData)
+            .catch(err => console.error("Top market data fetch failed:", err));
+        }
+  
+        if (!trendingCoins.length) {
+          GettrendingCoins()
+            .then(settrendingCoins)
+            .catch(err => console.error("Trending coins fetch failed:", err));
+        }
+  
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
       }
     };
   
-    fetchData();
-  }, [gainCoins, btc, trendingCoins, marketreview, TopMarketData]);
+    fetchDashboard();
+  }, []); // run only once on mount
   
   return (
     <Router>

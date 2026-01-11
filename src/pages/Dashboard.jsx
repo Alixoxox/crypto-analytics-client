@@ -19,10 +19,7 @@ export default function Dashboard() {
     if (
       gainCoins.length &&
       btc?.prices?.length &&
-      trendingCoins.length &&
-      Object.keys(marketreview).length &&
-      TopMarketData.length
-    ) {
+      Object.keys(marketreview).length     ) {
       setLoading(false);
     }
   }, [gainCoins, btc, trendingCoins, marketreview, TopMarketData]);
