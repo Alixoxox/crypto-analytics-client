@@ -24,17 +24,14 @@ useEffect(() => {
   const fetchAll = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("jwt");
 
       // fetch coin data and prediction in parallel
       const [coinData, predictionData] = await Promise.all([
         getIndividualCoin(decodedId),
-        fetch(`${API_BASE_URL}/user/predict?coin=${decodedId}`, {
+        fetch(`${API_BASE_URL}/predict?coin=${decodedId}`, {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+            "Content-Type": "application/json"},
         }).then(res => res.json()),
       ]);
 

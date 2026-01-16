@@ -103,7 +103,7 @@ export const getMarketreview = async () => {
       const data = await response.json();
       return data;
     } catch (err) {
-      console.error("Error in getting coi names:", err);
+      console.error("Error in getting coin names:", err.error || err.message || err);
       return { error: err.message };
     }
   }
